@@ -1,8 +1,12 @@
 package com.dija.songmerge.songmerger.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +18,7 @@ import android.widget.Button;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.RingMergeActivity;
+import com.dija.songmerge.songmerger.SelectSongActivity;
 import com.dija.songmerge.songmerger.adapter.RecyclerListAdapter;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SimpleItemTouchHelperCallback;
@@ -34,6 +39,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private OnFragmentInteractionListener mListener;
     private RecyclerView songList;
     private Button AddButton;
+    private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
 
     public SongFragment() {
         // Required empty public constructor
@@ -74,9 +80,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(songList);
 
-
         AddButton.setOnClickListener(this);
-
         return v;
     }
 
@@ -97,8 +101,32 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
 
     @Override
     public void onClick(View v) {
-        Intent AddSong = new Intent(getActivity(), RingMergeActivity.class);
-        startActivity(AddSong);
+
+        if(checkPermissionForReadExtertalStorage()) {
+            Intent AddSong = new Intent(getActivity(), SelectSongActivity.class);
+            startActivity(AddSong);
+        }
+        else{
+
+        }
+    }
+
+    public void requestPermissionForReadExtertalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public boolean checkPermissionForReadExtertalStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int result = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
     }
 
 
