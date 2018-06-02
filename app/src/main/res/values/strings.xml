@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Song Merger</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_hub">HubActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment2">Hello blank fragment2</string>
+    <string name="search_edit_box">Search</string>
+
+    <array name="dummy_items">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+        <item>Five</item>
+        <item>Six</item>
+        <item>Seven</item>
+        <item>Eight</item>
+        <item>Nine</item>
+        <item>Ten</item>
+    </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Notifications -->
+
+    <!-- Dialogs -->
+
+
+    <string name="sdcard_readonly">Sorry, the SD Card is mounted as read-only requires it to be writable.</string>
+    <string name="no_sdcard">Sorry, can\'t run unless you have an SD Card inserted.</string>
+    <string name="sdcard_shared">Sorry, can\'t run while your handset is mounted as a USB device.</string>
+
+
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_default_ringtone">Set as Default Ringtone</string>
+    <string name="context_menu_contact">Assign to Contact</string>
+    <string name="context_menu_default_notification">Set as Default Notification</string>
+
+
+    <string name="default_ringtone_success_message">Changed default ringtone</string>
+    <string name="default_notification_success_message">Changed default notification sound</string>
+
+    <string name="artist_name"></string>
+
+    <string name="delete_ringtone">Delete Ringtone</string>
+    <string name="delete_alarm">Delete Alarm</string>
+    <string name="delete_notification">Delete Notification</string>
+    <string name="delete_music">Delete Music</string>
+    <string name="delete_audio">Delete Audio</string>
+    <string name="confirm_delete_ringdroid">Are you sure?</string>
+    <string name="confirm_delete_non_ringdroid">Are you sure?</string>
+    <string name="delete_ok_button">Delete</string>
+    <string name="delete_cancel_button">Cancel</string>
+    <string name="delete_failed">Unable to delete file</string>
+
+    <string name="alert_title_failure">Error</string>
+    <string name="alert_ok_button">OK</string>
+
+
+</resources>
