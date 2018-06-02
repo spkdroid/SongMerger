@@ -1,4 +1,4 @@
-package com.dija.songmerge.songmerger.database;
+package com.dija.songmerge.songmerger.repository.database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -12,6 +12,11 @@ public class Song
     private String songID;
 
     private String songLocation;
+
+    public Song(String songID, String songLocation) {
+        this.songID = songID;
+        this.songLocation = songLocation;
+    }
 
     @NonNull
     public String getSongID()

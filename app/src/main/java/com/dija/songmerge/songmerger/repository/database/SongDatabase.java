@@ -1,4 +1,4 @@
-package com.dija.songmerge.songmerger.database;
+package com.dija.songmerge.songmerger.repository.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
