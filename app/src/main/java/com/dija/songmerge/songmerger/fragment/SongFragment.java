@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.RingMergeActivity;
@@ -107,7 +108,11 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
             startActivity(AddSong);
         }
         else{
-
+            try {
+                requestPermissionForReadExtertalStorage();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(),"Permission Issue",Toast.LENGTH_LONG).show();
+            }
         }
     }
 

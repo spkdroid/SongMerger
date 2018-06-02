@@ -41,35 +41,14 @@ public class SelectSongActivity extends AppCompatActivity {
 
     private void prepareSongData() {
 
-         SongList a = new SongList("Hello","Hello");
-         songList.add(a);
+        ArrayList<HashMap<String, String>> hello =  getAudioList();
 
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
-
-        a = new SongList("Hello","Hello");
-        songList.add(a);
+        for (HashMap<String,String> p:hello)
+        {
+            System.out.println(p.get("songTitle")+" "+p.get("songPath"));
+            SongList a = new SongList(p.get("songTitle"),p.get("songPath"));
+            songList.add(a);
+        }
 
         mAdapter.notifyDataSetChanged();
     }
@@ -85,6 +64,7 @@ public class SelectSongActivity extends AppCompatActivity {
         int count = mCursor.getCount();
         System.out.println("total no of songs are=" + count);
         HashMap<String, String> songMap;
+
         while (mCursor.moveToNext()) {
             songMap = new HashMap<String, String>();
             songMap.put(
@@ -95,6 +75,7 @@ public class SelectSongActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
             mSongsList.add(songMap);
         }
+
         mCursor.close();
         return mSongsList;
     }
