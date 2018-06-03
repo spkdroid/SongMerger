@@ -1,8 +1,12 @@
 package com.dija.songmerge.songmerger.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.RingMergeActivity;
+import com.dija.songmerge.songmerger.SelectSongActivity;
 import com.dija.songmerge.songmerger.adapter.RecyclerListAdapter;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SimpleItemTouchHelperCallback;
@@ -35,6 +41,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private OnFragmentInteractionListener mListener;
     private RecyclerView songList;
     private Button AddButton;
+    private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
     private SongRepository songRepository;
 
     public SongFragment() {
@@ -76,7 +83,6 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(songList);
 
-
         AddButton.setOnClickListener(this);
 
         songRepository = new SongRepository(getActivity().getApplicationContext());
@@ -101,8 +107,46 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
 
     @Override
     public void onClick(View v) {
-        Intent AddSong = new Intent(getActivity(), RingMergeActivity.class);
-        startActivity(AddSong);
+
+        if(checkPermissionForReadExtertalStorage()) {
+
+
+            Intent AddSong = new Intent(getActivity(), SelectSongActivity.class);
+            startActivityForResult(AddSong,1);
+            //startActivity(AddSong);
+        }
+        else{
+            try {
+                requestPermissionForReadExtertalStorage();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(),"Permission Issue",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data); comment this unless you want to pass your result to the activity.
+        System.out.println("Hello World!! This the activity Result");
+    }
+
+
+    public void requestPermissionForReadExtertalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public boolean checkPermissionForReadExtertalStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int result = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
     }
 
 

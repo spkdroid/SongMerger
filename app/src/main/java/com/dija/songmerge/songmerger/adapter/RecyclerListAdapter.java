@@ -19,6 +19,7 @@ package com.dija.songmerge.songmerger.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.helper.ItemTouchHelperAdapter;
@@ -50,6 +52,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private final List<String> mItems = new ArrayList<>();
 
     private final OnStartDragListener mDragStartListener;
+
 
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
         mDragStartListener = dragStartListener;
@@ -97,6 +100,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         return mItems.size();
     }
 
+
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
      * "handle" view that initiates a drag event when touched.
@@ -106,9 +110,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         public final TextView textView;
         public final ImageView handleView;
+        CardView cv;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+            cv = (CardView) itemView.findViewById(R.id.card_view);
             textView = (TextView) itemView.findViewById(R.id.text);
             handleView = (ImageView) itemView.findViewById(R.id.handle);
         }
