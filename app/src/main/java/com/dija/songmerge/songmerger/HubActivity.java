@@ -12,12 +12,14 @@ import android.widget.TextView;
 import com.dija.songmerge.songmerger.fragment.FileFragment;
 import com.dija.songmerge.songmerger.fragment.NotificationFragment;
 import com.dija.songmerge.songmerger.fragment.SongFragment;
+import com.dija.songmerge.songmerger.repository.SongRepository;
 
 public class HubActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private Fragment currentFragment = null;
     private FragmentTransaction ft;
+    private SongRepository songRepository;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,6 +54,11 @@ public class HubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hub);
+
+        songRepository = new SongRepository(getApplicationContext());
+
+
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -65,11 +72,9 @@ public class HubActivity extends AppCompatActivity {
 
         /**
          *  Clear the database over here
-         *  
+         *
          */
-
-
-
+        songRepository.clearTable();
     }
 
 }
