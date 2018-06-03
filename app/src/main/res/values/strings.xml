@@ -61,6 +61,7 @@
 
     <string name="alert_title_failure">Error</string>
     <string name="alert_ok_button">OK</string>
+    <string name="options">Option</string>
 
 
 </resources>

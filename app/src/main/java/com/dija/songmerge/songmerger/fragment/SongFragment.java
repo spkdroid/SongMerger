@@ -23,6 +23,7 @@ import com.dija.songmerge.songmerger.SelectSongActivity;
 import com.dija.songmerge.songmerger.adapter.RecyclerListAdapter;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SimpleItemTouchHelperCallback;
+import com.dija.songmerge.songmerger.repository.SongRepository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +42,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private RecyclerView songList;
     private Button AddButton;
     private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
+    private SongRepository songRepository;
 
     public SongFragment() {
         // Required empty public constructor
@@ -82,8 +84,11 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         mItemTouchHelper.attachToRecyclerView(songList);
 
         AddButton.setOnClickListener(this);
+
+        songRepository = new SongRepository(getActivity().getApplicationContext());
         return v;
     }
+
 
 
 
