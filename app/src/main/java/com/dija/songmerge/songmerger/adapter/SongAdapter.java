@@ -1,7 +1,5 @@
 package com.dija.songmerge.songmerger.adapter;
 
-import android.content.DialogInterface;
-import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.helper.SongList;
@@ -22,9 +19,11 @@ import java.util.List;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 
     private List<SongList> songList;
+    private SongSelectedListener songSelectedListener;
 
-    public SongAdapter(List<SongList> songList) {
+    public SongAdapter(List<SongList> songList, SongSelectedListener songSelectedListener) {
         this.songList = songList;
+        this.songSelectedListener = songSelectedListener;
     }
 
 
@@ -54,7 +53,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
                         @Override
                         public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
-
+                            String songId = songName.getText().toString();
+                            String location = songName.getText().toString();
+                            songSelectedListener.onSongSelected(songId,location);
                         }
 
                         @Override
