@@ -37,12 +37,12 @@ public class HubActivity extends AppCompatActivity {
                     ft.replace(R.id.content, currentFragment);
                     ft.commit();
                     return true;
-                case R.id.navigation_notifications:
-                    currentFragment = new NotificationFragment();
-                    ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.content, currentFragment);
-                    ft.commit();
-                    return true;
+             //   case R.id.navigation_notifications:
+               //     currentFragment = new NotificationFragment();
+               //     ft = getSupportFragmentManager().beginTransaction();
+               //     ft.replace(R.id.content, currentFragment);
+              //      ft.commit();
+              //      return true;
             }
             return false;
         }
