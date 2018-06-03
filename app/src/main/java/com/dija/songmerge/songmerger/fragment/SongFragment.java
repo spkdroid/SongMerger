@@ -109,8 +109,11 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     public void onClick(View v) {
 
         if(checkPermissionForReadExtertalStorage()) {
+
+
             Intent AddSong = new Intent(getActivity(), SelectSongActivity.class);
-            startActivity(AddSong);
+            startActivityForResult(AddSong,1);
+            //startActivity(AddSong);
         }
         else{
             try {
@@ -120,6 +123,13 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
             }
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data); comment this unless you want to pass your result to the activity.
+        System.out.println("Hello World!! This the activity Result");
+    }
+
 
     public void requestPermissionForReadExtertalStorage() throws Exception {
         try {
