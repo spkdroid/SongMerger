@@ -40,6 +40,11 @@ public class SongRepository
         database.getSongDAOAccess().deleteSong(songToBeDeleted);
     }
 
+    public void clearTable(){
+        database.getSongDAOAccess().clearTable();
+    }
+
+
     public Song getSongById(String songId) {
        return  database.getSongDAOAccess().fetchSongByID(songId);
     }

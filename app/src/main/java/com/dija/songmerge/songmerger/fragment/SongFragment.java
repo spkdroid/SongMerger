@@ -49,6 +49,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private Button AddButton;
     private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
     private SongRepository songRepository;
+    private static RecyclerListAdapter adapter;
 
     public SongFragment() {
         // Required empty public constructor
@@ -76,28 +77,23 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_song, container, false);
-
         songList = v.findViewById(R.id.songlist);
         AddButton = v.findViewById(R.id.addbutton);
 
-
         songRepository = new SongRepository(getActivity().getApplicationContext());
         loadSongsFromDB();
-        RecyclerListAdapter adapter = new RecyclerListAdapter(
+
+        adapter = new RecyclerListAdapter(
                 getActivity(),
                 this,
                 convertSongsToSongList(loadSongsFromDB()));
         if(adapter!=null)
             songList.setAdapter(adapter);
         songList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(songList);
-
         AddButton.setOnClickListener(this);
-
-
         return v;
     }
 
@@ -116,7 +112,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         FetchSongFromRepo fetchTask = new FetchSongFromRepo();
         try
         {
-            songsFromRepo = fetchTask.get();
+            songsFromRepo = fetchTask.execute().get();
         } catch (InterruptedException e)
         {
             e.printStackTrace();
@@ -161,8 +157,17 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data); comment this unless you want to pass your result to the activity.
-        System.out.println("Hello World!! This the activity Result");
+
+        loadSongsFromDB();
+
+        adapter = new RecyclerListAdapter(
+                getActivity(),
+                this,
+                convertSongsToSongList(loadSongsFromDB()));
+        if(adapter!=null)
+            songList.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
     }
 
 

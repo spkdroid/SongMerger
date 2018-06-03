@@ -61,4 +61,15 @@ public class HubActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    public void onBackPressed(){
+
+        /**
+         *  Clear the database over here
+         *  
+         */
+
+
+
+    }
+
 }
