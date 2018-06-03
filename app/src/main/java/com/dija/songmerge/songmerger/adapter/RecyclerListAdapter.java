@@ -27,12 +27,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.helper.ItemTouchHelperAdapter;
 import com.dija.songmerge.songmerger.helper.ItemTouchHelperViewHolder;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
+import com.dija.songmerge.songmerger.helper.SongList;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,17 +48,32 @@ import java.util.List;
  *
  * @author Paul Burke (ipaulpro)
  */
+
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
-    private final List<String> mItems = new ArrayList<>();
+    private final List<SongList> mItems = new ArrayList<>();
 
     private final OnStartDragListener mDragStartListener;
 
-
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
         mDragStartListener = dragStartListener;
-        mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
+
+        /**
+         *
+         *   TODO: Implement the songlist object to the list
+         *
+         */
+
+        SongList a = new SongList("Hello","York");
+        mItems.add(a);
+        a = new SongList("Shape of you","York");
+        mItems.add(a);
+        a = new SongList("Ligament Tear","York");
+        mItems.add(a);
+        a = new SongList("King","York");
+        mItems.add(a);
+        // mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
     }
 
     @Override
@@ -68,7 +85,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        holder.textView.setText(mItems.get(position));
+
+        holder.songNameView.setText(mItems.get(position).getSongName());
+        holder.songLocView.setText(mItems.get(position).getSongLocation());
 
         // Start a drag whenever the handle view it touched
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
@@ -80,6 +99,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                 return false;
             }
         });
+
     }
 
     @Override
@@ -108,14 +128,15 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
 
-        public final TextView textView;
+        public final TextView songNameView;
         public final ImageView handleView;
+        public final TextView songLocView;
         CardView cv;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.card_view);
-            textView = (TextView) itemView.findViewById(R.id.text);
+            songNameView = (TextView) itemView.findViewById(R.id.songnameview);
+            songLocView = (TextView) itemView.findViewById(R.id.songlocationview);
             handleView = (ImageView) itemView.findViewById(R.id.handle);
         }
 

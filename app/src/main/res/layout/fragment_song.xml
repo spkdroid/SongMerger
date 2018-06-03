@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".fragment.SongFragment">
-
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/addbutton"
-        android:layout_width="189dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/mergebutton"
-        android:text="Add Song" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/songlist"
@@ -21,15 +15,27 @@
         android:layout_height="450dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:translationY="-40dp"
+        >
     <Button
         android:id="@+id/mergebutton"
         android:layout_width="208dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="54dp"
         android:text="Merge" />
-</RelativeLayout>
+
+        <Button
+            android:id="@+id/addbutton"
+            android:layout_width="189dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/mergebutton"
+            android:text="Add Song" />
+    </LinearLayout>
+
+</LinearLayout>

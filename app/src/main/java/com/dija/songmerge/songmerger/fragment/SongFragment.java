@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
-import com.dija.songmerge.songmerger.RingMergeActivity;
 import com.dija.songmerge.songmerger.SelectSongActivity;
 import com.dija.songmerge.songmerger.adapter.RecyclerListAdapter;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
