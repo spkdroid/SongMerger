@@ -55,24 +55,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<SongList> songs) {
         mDragStartListener = dragStartListener;
-
-        /**
-         *
-         *   TODO: Implement the songlist object to the list
-         *
-         */
-
-        SongList a = new SongList("Hello","York");
-        mItems.add(a);
-        a = new SongList("Shape of you","York");
-        mItems.add(a);
-        a = new SongList("Ligament Tear","York");
-        mItems.add(a);
-        a = new SongList("King","York");
-        mItems.add(a);
-
         mItems.addAll(songs);
-        // mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
     }
 
     @Override
