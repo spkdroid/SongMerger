@@ -19,6 +19,9 @@ public interface SongDAOAccess
     @Query("SELECT * FROM Song")
     List<Song> fetchAllSongs();
 
+    @Query("Delete from Song")
+    void clearTable();
+
     @Delete
     void deleteSong(Song songToBeDeleted);
 

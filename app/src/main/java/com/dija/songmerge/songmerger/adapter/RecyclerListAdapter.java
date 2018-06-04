@@ -34,10 +34,7 @@ import com.dija.songmerge.songmerger.helper.ItemTouchHelperViewHolder;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SongList;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,24 +53,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     private final OnStartDragListener mDragStartListener;
 
-    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
+    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<SongList> songs) {
         mDragStartListener = dragStartListener;
-
-        /**
-         *
-         *   TODO: Implement the songlist object to the list
-         *
-         */
-
-        SongList a = new SongList("Hello","York");
-        mItems.add(a);
-        a = new SongList("Shape of you","York");
-        mItems.add(a);
-        a = new SongList("Ligament Tear","York");
-        mItems.add(a);
-        a = new SongList("King","York");
-        mItems.add(a);
-        // mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
+        mItems.addAll(songs);
     }
 
     @Override

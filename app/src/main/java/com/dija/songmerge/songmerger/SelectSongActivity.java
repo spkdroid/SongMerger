@@ -119,7 +119,6 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
         }
         mAdapter.notifyDataSetChanged();
 
-
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -22,7 +23,13 @@ import com.dija.songmerge.songmerger.SelectSongActivity;
 import com.dija.songmerge.songmerger.adapter.RecyclerListAdapter;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SimpleItemTouchHelperCallback;
+import com.dija.songmerge.songmerger.helper.SongList;
 import com.dija.songmerge.songmerger.repository.SongRepository;
+import com.dija.songmerge.songmerger.repository.database.Song;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +49,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private Button AddButton;
     private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
     private SongRepository songRepository;
+    private static RecyclerListAdapter adapter;
 
     public SongFragment() {
         // Required empty public constructor
@@ -69,27 +77,51 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_song, container, false);
-
         songList = v.findViewById(R.id.songlist);
         AddButton = v.findViewById(R.id.addbutton);
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this);
-        if(adapter!=null)
-        songList.setAdapter(adapter);
-        songList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        songRepository = new SongRepository(getActivity().getApplicationContext());
+        loadSongsFromDB();
 
+        adapter = new RecyclerListAdapter(
+                getActivity(),
+                this,
+                convertSongsToSongList(loadSongsFromDB()));
+        if(adapter!=null)
+            songList.setAdapter(adapter);
+        songList.setLayoutManager(new LinearLayoutManager(getActivity()));
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(songList);
-
         AddButton.setOnClickListener(this);
-
-        songRepository = new SongRepository(getActivity().getApplicationContext());
         return v;
     }
 
+    private List<SongList> convertSongsToSongList(List<Song> songList) {
+        List<SongList> converted = new ArrayList<>();
+        for(Song song: songList) {
+            SongList aSongList = new SongList(song.getSongID(), song.getSongLocation());
+            converted.add(aSongList);
+        }
+        return converted;
+    }
 
-
+    private List<Song> loadSongsFromDB()
+    {
+        List<Song> songsFromRepo = new ArrayList<>();
+        FetchSongFromRepo fetchTask = new FetchSongFromRepo();
+        try
+        {
+            songsFromRepo = fetchTask.execute().get();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        } catch (ExecutionException e)
+        {
+            e.printStackTrace();
+        }
+        return songsFromRepo;
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -125,8 +157,17 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data); comment this unless you want to pass your result to the activity.
-        System.out.println("Hello World!! This the activity Result");
+
+        loadSongsFromDB();
+
+        adapter = new RecyclerListAdapter(
+                getActivity(),
+                this,
+                convertSongsToSongList(loadSongsFromDB()));
+        if(adapter!=null)
+            songList.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -162,5 +203,15 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private class FetchSongFromRepo extends AsyncTask<String,Void,List<Song>>
+    {
+
+        @Override
+        protected List<Song> doInBackground(String... params)
+        {
+            return songRepository.getAllSongs();
+        }
     }
 }

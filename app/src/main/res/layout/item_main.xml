@@ -22,6 +22,18 @@
     android:focusable="true"
     android:foreground="?selectableItemBackground">
 
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_gravity="center"
+        card_view:cardBackgroundColor="#FFFFFF"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="5dp"
+        card_view:cardUseCompatPadding="true">
+
+
     <TextView
         android:id="@+id/songnameview"
         android:layout_width="wrap_content"
@@ -29,7 +41,8 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="24dp"
+        android:textSize="18dp"
+        android:textColor="#000000"
         />
 
     <TextView
@@ -47,5 +60,5 @@
         android:scaleType="center"
         android:src="@drawable/ic_launcher_background"
     />
-
+    </android.support.v7.widget.CardView>
 </FrameLayout>
