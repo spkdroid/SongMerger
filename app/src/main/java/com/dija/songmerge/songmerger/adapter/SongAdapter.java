@@ -54,7 +54,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
                         @Override
                         public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
                             String songId = songName.getText().toString();
-                            String location = songName.getText().toString();
+                            String location = songLocation.getText().toString();
                             songSelectedListener.onSongSelected(songId,location);
                         }
 
@@ -87,6 +87,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     @Override
     public int getItemCount() {
         return songList.size();
+    }
+
+    public List<SongList> Fetch(){
+        return songList;
     }
 
 }

@@ -102,6 +102,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         return mItems.size();
     }
 
+    public List<SongList> getmItems() {
+        return mItems;
+    }
 
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
@@ -131,5 +134,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public void onItemClear() {
             itemView.setBackgroundColor(0);
         }
+
+
     }
 }

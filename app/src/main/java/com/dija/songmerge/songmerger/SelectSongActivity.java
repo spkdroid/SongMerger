@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.adapter.SongAdapter;
 import com.dija.songmerge.songmerger.adapter.SongSelectedListener;
@@ -68,7 +69,6 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
             System.out.println(p.get("songTitle")+" "+p.get("songPath"));
             SongList a = new SongList(p.get("songTitle"),p.get("songPath"));
             resultList.add(a);
-
         }
 
         songList.addAll(resultList);

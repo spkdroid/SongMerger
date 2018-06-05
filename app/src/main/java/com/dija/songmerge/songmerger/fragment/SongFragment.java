@@ -1,14 +1,18 @@
 package com.dija.songmerge.songmerger.fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -27,7 +31,19 @@ import com.dija.songmerge.songmerger.helper.SongList;
 import com.dija.songmerge.songmerger.repository.SongRepository;
 import com.dija.songmerge.songmerger.repository.database.Song;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.SequenceInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -47,9 +63,22 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private OnFragmentInteractionListener mListener;
     private RecyclerView songList;
     private Button AddButton;
+    private Button MergeButton;
     private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
     private SongRepository songRepository;
     private static RecyclerListAdapter adapter;
+
+
+
+
+    static List<FileInputStream> ar = new ArrayList<FileInputStream>();
+    static SequenceInputStream seq;
+    static DataOutputStream fos;
+    int temp;
+    static int counter = 1;
+    ProgressDialog barProgressDialog;
+    ProgressDialog progress;
+
 
     public SongFragment() {
         // Required empty public constructor
@@ -78,7 +107,9 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_song, container, false);
         songList = v.findViewById(R.id.songlist);
+
         AddButton = v.findViewById(R.id.addbutton);
+        MergeButton =  v.findViewById(R.id.mergebutton);
 
         songRepository = new SongRepository(getActivity().getApplicationContext());
         loadSongsFromDB();
@@ -93,7 +124,10 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(songList);
+
         AddButton.setOnClickListener(this);
+        MergeButton.setOnClickListener(this);
+
         return v;
     }
 
@@ -139,21 +173,41 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     @Override
     public void onClick(View v) {
 
-        if(checkPermissionForReadExtertalStorage()) {
+        if(v == AddButton) {
 
-
-            Intent AddSong = new Intent(getActivity(), SelectSongActivity.class);
-            startActivityForResult(AddSong,1);
-            //startActivity(AddSong);
-        }
-        else{
-            try {
-                requestPermissionForReadExtertalStorage();
-            } catch (Exception e) {
-                Toast.makeText(getActivity(),"Permission Issue",Toast.LENGTH_LONG).show();
+            if (checkPermissionForReadExtertalStorage()) {
+                Intent AddSong = new Intent(getActivity(), SelectSongActivity.class);
+                startActivityForResult(AddSong, 1);
+                //startActivity(AddSong);
+            } else {
+                try {
+                    requestPermissionForReadExtertalStorage();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Permission Issue", Toast.LENGTH_LONG).show();
+                }
             }
         }
+
+        if(v == MergeButton) {
+
+        List<SongList> s = adapter.getmItems();
+            int j=0;
+            for (SongList d:s) {
+                try {
+                    ar.add(new FileInputStream(new File(d.getSongLocation())));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            mergerService(ar, "ASZFG");
+
+        }
+
     }
+
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -190,16 +244,18 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
+
+        /**
+         * This interface must be implemented by activities that contain this
+         * fragment to allow an interaction in this fragment to be communicated
+         * to the activity and potentially other fragments contained in that
+         * activity.
+         * <p>
+         * See the Android Training lesson <a href=
+         * "http://developer.android.com/training/basics/fragments/communicating.html"
+         * >Communicating with Other Fragments</a> for more information.
+         */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -214,4 +270,96 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
             return songRepository.getAllSongs();
         }
     }
-}
+
+
+    protected void mergerService(List<FileInputStream> ar2, String length) {
+        // TODO Auto-generated method stub
+
+        final String res = Environment.getExternalStorageDirectory() + "/videotomusic/" + length + ".mp3";
+        final Iterator<FileInputStream> it = ar2.iterator();
+
+        Enumeration<DataInputStream> en = new Enumeration<DataInputStream>() {
+
+            public boolean hasMoreElements() {
+                return it.hasNext();
+            }
+
+            public DataInputStream nextElement() {
+                return new DataInputStream(new BufferedInputStream(it.next()));
+            }
+        };
+        seq = new SequenceInputStream(en);
+
+        try {
+            fos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(res)));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        new AsyncTask<Integer, Void, Void>() {
+            protected void onPreExecute() {
+                progress = new ProgressDialog(getActivity());
+                progress.setMessage("Merging..Please wait!");
+                progress.setCancelable(true);
+                progress.show();
+            }
+
+            @Override
+            protected Void doInBackground(Integer... params) {
+                // TODO Auto-generated method stub
+
+                try {
+                    while ((temp = seq.read()) != -1) {
+                        fos.write(temp);
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            protected void onPostExecute(Void result) {
+                progress.dismiss();
+                counter = 0;
+                ar.clear();
+
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Your File Has been Successfully Created")
+                        .setMessage("The Output file can be found in the memory card in the folder named Mp3Editor in the memory card")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Rate Us", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=my.me.dija.mp3editor")));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=my.me.dija.mp3editor")));
+                                }
+                            }
+                        })
+                        .setIcon(R.drawable.icon)
+                        .show();
+            }
+
+
+//			      finish();
+//			      Intent i=new Intent(getApplicationContext(),Mp3Editor.class);
+//	              startActivity(i);
+
+        }.execute();
+
+
+    }
+
+
+
+    }
