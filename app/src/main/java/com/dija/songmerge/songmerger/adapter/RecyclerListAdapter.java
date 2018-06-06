@@ -92,8 +92,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(mItems, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
+
+        try {
+            Collections.swap(mItems, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+        } catch (Exception e) {
+            // Investigate this bug
+        }
         return true;
     }
 

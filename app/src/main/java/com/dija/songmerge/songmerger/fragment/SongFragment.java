@@ -201,7 +201,6 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
             }
 
             mergerService(ar, "ASZFG");
-
         }
 
     }
