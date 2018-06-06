@@ -1,5 +1,7 @@
 package com.dija.songmerge.songmerger;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -68,13 +70,24 @@ public class HubActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void onBackPressed(){
+    @SuppressLint("StaticFieldLeak")
+    public void onBackPressed() {
 
-        /**
-         *  Clear the database over here
-         *
-         */
-        songRepository.clearTable();
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                songRepository.clearTable();
+                return 0;
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                finish();
+            }
+
+        }.execute();
     }
 
 }
