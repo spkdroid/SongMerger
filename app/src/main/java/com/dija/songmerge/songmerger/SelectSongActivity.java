@@ -35,7 +35,11 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_song);
+
+        model = new SongModel(getApplicationContext());
+
         recyclerView = findViewById(R.id.fetchsong);
+
         mAdapter = new SongAdapter(songList, this);
 
         EditText e = findViewById(R.id.searchsong);
@@ -50,12 +54,13 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
         recyclerView.setLayoutManager(llm);
         recyclerView.setHasFixedSize(true);
 
-        model = new SongModel(getApplicationContext());
+
         prepareSongData();
     }
 
     private void prepareSongData() {
-        songList.addAll(model.getSongList(getContentResolver()));
+        resultList = model.getSongList(getContentResolver());
+        songList.addAll(resultList);
         mAdapter.notifyDataSetChanged();
     }
 
