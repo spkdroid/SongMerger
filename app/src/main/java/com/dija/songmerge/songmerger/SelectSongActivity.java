@@ -133,11 +133,9 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
         AddSongToRepo addSongToRepo = new AddSongToRepo();
         addSongToRepo.execute(songToBeAdded);
         Log.d("dbMessage","added");
-
     }
 
     private class FetchSongFromRepo extends AsyncTask<String,Void,List<Song>> {
-
         @Override
         protected List<Song> doInBackground(String... params)
         {

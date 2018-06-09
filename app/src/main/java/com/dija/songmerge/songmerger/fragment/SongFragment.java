@@ -1,6 +1,7 @@
 package com.dija.songmerge.songmerger.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
@@ -199,10 +201,38 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                     e.printStackTrace();
                 }
             }
+
             /**
              *  File Dialog Implementation
              */
-            mergerService(ar, "ASZFG");
+
+            final Dialog dialog = new Dialog(getActivity());
+            // Include dialog.xml file
+            dialog.setContentView(R.layout.file_save);
+            // Set dialog title
+            dialog.setTitle("Please Enter the File Name");
+
+            final EditText fileName =dialog.findViewById(R.id.filenameedit);
+
+            Button saveFinal =  dialog.findViewById(R.id.mergersave);
+
+            saveFinal.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    if (fileName.getText().toString().length() > 1 && ar.size()>1) {
+                        //		dialog.dismiss();
+                        mergerService(ar, fileName.getText().toString());
+                    } else {
+                        Toast.makeText(getActivity(), "Invalid Operation", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+
+            dialog.show();
+
         }
 
     }

@@ -62,6 +62,10 @@
     <string name="alert_title_failure">Error</string>
     <string name="alert_ok_button">OK</string>
     <string name="options">Option</string>
+    <string name="ringtone_type_label">Save File</string>
+    <string name="ringtone_name_label">Enter a filename</string>
+    <string name="file_save_button_save">Save</string>
+    <string name="file_save_button_cancel">Cancel</string>
 
 
 </resources>
