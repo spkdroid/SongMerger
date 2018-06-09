@@ -17,7 +17,11 @@
 package com.dija.songmerge.songmerger.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.helper.ItemTouchHelperAdapter;
@@ -34,9 +39,14 @@ import com.dija.songmerge.songmerger.helper.ItemTouchHelperViewHolder;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SongList;
 
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import wseemann.media.FFmpegMediaMetadataRetriever;
 
 
 /**
@@ -70,6 +80,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         holder.songNameView.setText(mItems.get(position).getSongName());
         holder.songLocView.setText(mItems.get(position).getSongLocation());
+        String filePath = new File(mItems.get(position).getSongLocation()).getAbsolutePath();
+
+        Bitmap coverBitmap = BitmapFactory.decodeFile(filePath);
+
 
         // Start a drag whenever the handle view it touched
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
