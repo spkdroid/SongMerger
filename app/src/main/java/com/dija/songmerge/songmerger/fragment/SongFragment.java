@@ -199,7 +199,9 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                     e.printStackTrace();
                 }
             }
-
+            /**
+             *  File Dialog Implementation
+             */
             mergerService(ar, "ASZFG");
         }
 
@@ -349,10 +351,6 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                         .show();
             }
 
-
-//			      finish();
-//			      Intent i=new Intent(getApplicationContext(),Mp3Editor.class);
-//	              startActivity(i);
 
         }.execute();
 
