@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Song Merger</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home">Song</string>
+    <string name="title_dashboard">Exported Song</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_hub">HubActivity</string>
 
@@ -62,6 +62,10 @@
     <string name="alert_title_failure">Error</string>
     <string name="alert_ok_button">OK</string>
     <string name="options">Option</string>
+    <string name="ringtone_type_label">Save File</string>
+    <string name="ringtone_name_label">Enter a filename</string>
+    <string name="file_save_button_save">Save</string>
+    <string name="file_save_button_cancel">Cancel</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.dija.songmerge.songmerger.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
@@ -55,7 +57,7 @@ import java.util.concurrent.ExecutionException;
  * Use the {@link SongFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SongFragment extends Fragment implements OnStartDragListener,View.OnClickListener {
+public class SongFragment extends Fragment implements OnStartDragListener, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -64,11 +66,9 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     private RecyclerView songList;
     private Button AddButton;
     private Button MergeButton;
-    private int READ_STORAGE_PERMISSION_REQUEST_CODE =1;
+    private int READ_STORAGE_PERMISSION_REQUEST_CODE = 1;
     private SongRepository songRepository;
     private static RecyclerListAdapter adapter;
-
-
 
 
     static List<FileInputStream> ar = new ArrayList<FileInputStream>();
@@ -109,7 +109,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
         songList = v.findViewById(R.id.songlist);
 
         AddButton = v.findViewById(R.id.addbutton);
-        MergeButton =  v.findViewById(R.id.mergebutton);
+        MergeButton = v.findViewById(R.id.mergebutton);
 
         songRepository = new SongRepository(getActivity().getApplicationContext());
         loadSongsFromDB();
@@ -118,8 +118,11 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                 getActivity(),
                 this,
                 convertSongsToSongList(loadSongsFromDB()));
-        if(adapter!=null)
+
+        if (adapter != null)
             songList.setAdapter(adapter);
+
+
         songList.setLayoutManager(new LinearLayoutManager(getActivity()));
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
@@ -133,25 +136,21 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
 
     private List<SongList> convertSongsToSongList(List<Song> songList) {
         List<SongList> converted = new ArrayList<>();
-        for(Song song: songList) {
+        for (Song song : songList) {
             SongList aSongList = new SongList(song.getSongID(), song.getSongLocation());
             converted.add(aSongList);
         }
         return converted;
     }
 
-    private List<Song> loadSongsFromDB()
-    {
+    private List<Song> loadSongsFromDB() {
         List<Song> songsFromRepo = new ArrayList<>();
         FetchSongFromRepo fetchTask = new FetchSongFromRepo();
-        try
-        {
+        try {
             songsFromRepo = fetchTask.execute().get();
-        } catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (ExecutionException e)
-        {
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
         return songsFromRepo;
@@ -173,7 +172,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     @Override
     public void onClick(View v) {
 
-        if(v == AddButton) {
+        if (v == AddButton) {
 
             if (checkPermissionForReadExtertalStorage()) {
                 Intent AddSong = new Intent(getActivity(), SelectSongActivity.class);
@@ -188,11 +187,11 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
             }
         }
 
-        if(v == MergeButton) {
+        if (v == MergeButton) {
 
-        List<SongList> s = adapter.getmItems();
-            int j=0;
-            for (SongList d:s) {
+            List<SongList> s = adapter.getmItems();
+
+            for (SongList d : s) {
                 try {
                     ar.add(new FileInputStream(new File(d.getSongLocation())));
                 } catch (FileNotFoundException e) {
@@ -202,12 +201,29 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
             /**
              *  File Dialog Implementation
              */
-            mergerService(ar, "ASZFG");
+            final Dialog dialog = new Dialog(getActivity());
+            // Include dialog.xml file
+            dialog.setContentView(R.layout.file_save);
+            // Set dialog title
+            dialog.setTitle("Please Enter the File Name");
+            final EditText fileName = dialog.findViewById(R.id.filenameedit);
+            Button saveFinal = dialog.findViewById(R.id.mergersave);
+            saveFinal.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    if (fileName.getText().toString().length() > 1 && ar.size() > 1) {
+                        dialog.dismiss();
+                        mergerService(ar, fileName.getText().toString());
+                    } else {
+                        Toast.makeText(getActivity(), "Invalid Operation", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            dialog.show();
         }
-
     }
-
-
 
 
     @Override
@@ -219,7 +235,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                 getActivity(),
                 this,
                 convertSongsToSongList(loadSongsFromDB()));
-        if(adapter!=null)
+        if (adapter != null)
             songList.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();
@@ -245,29 +261,24 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     }
 
 
-
-
-        /**
-         * This interface must be implemented by activities that contain this
-         * fragment to allow an interaction in this fragment to be communicated
-         * to the activity and potentially other fragments contained in that
-         * activity.
-         * <p>
-         * See the Android Training lesson <a href=
-         * "http://developer.android.com/training/basics/fragments/communicating.html"
-         * >Communicating with Other Fragments</a> for more information.
-         */
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
-    private class FetchSongFromRepo extends AsyncTask<String,Void,List<Song>>
-    {
-
+    private class FetchSongFromRepo extends AsyncTask<String, Void, List<Song>> {
         @Override
-        protected List<Song> doInBackground(String... params)
-        {
+        protected List<Song> doInBackground(String... params) {
             return songRepository.getAllSongs();
         }
     }
@@ -276,7 +287,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     protected void mergerService(List<FileInputStream> ar2, String length) {
         // TODO Auto-generated method stub
 
-        final String res = Environment.getExternalStorageDirectory() + "/videotomusic/" + length + ".mp3";
+        final String res = Environment.getExternalStorageDirectory() + "/songmerger/" + length + ".mp3";
         final Iterator<FileInputStream> it = ar2.iterator();
 
         Enumeration<DataInputStream> en = new Enumeration<DataInputStream>() {
@@ -330,7 +341,7 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
 
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Your File Has been Successfully Created")
-                        .setMessage("The Output file can be found in the memory card in the folder named Mp3Editor in the memory card")
+                        .setMessage("The Output file can be found in the memory card in the folder named SongMerger in the memory card.Please use the Exported Song tab in the bottom navigation to find your song")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
@@ -341,9 +352,9 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
                                 try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=my.me.dija.mp3editor")));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.dija.songmerge.songmerger")));
                                 } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=my.me.dija.mp3editor")));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
                                 }
                             }
                         })
@@ -358,5 +369,4 @@ public class SongFragment extends Fragment implements OnStartDragListener,View.O
     }
 
 
-
-    }
+}

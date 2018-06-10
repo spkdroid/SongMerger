@@ -1,6 +1,10 @@
 package com.dija.songmerge.songmerger;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -73,21 +77,38 @@ public class HubActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public void onBackPressed() {
 
-        new AsyncTask<Void, Void, Integer>() {
 
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                songRepository.clearTable();
-                return 0;
+        new AlertDialog.Builder(this).setIcon(R.drawable.icon).setTitle("Exit Application")
+                .setMessage("Are you sure you want to exit this application?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        new AsyncTask<Void, Void, Integer>() {
+                            @Override
+                            protected Integer doInBackground(Void... voids) {
+                                songRepository.clearTable();
+                                return 0;
+                            }
+                            @Override
+                            protected void onPostExecute(Integer integer) {
+                                super.onPostExecute(integer);
+                                finish();
+                            }
+                        }.execute();
+
+                    }
+                }).setNeutralButton("Rate Us", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=com.dija.songmerge.songmerger")));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
+                }
             }
-
-            @Override
-            protected void onPostExecute(Integer integer) {
-                super.onPostExecute(integer);
-                finish();
-            }
-
-        }.execute();
+        }).setNegativeButton("No", null).show();
     }
 
 }
