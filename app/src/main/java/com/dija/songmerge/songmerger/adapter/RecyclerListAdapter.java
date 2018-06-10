@@ -81,13 +81,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.songNameView.setText(mItems.get(position).getSongName());
         holder.songLocView.setText(mItems.get(position).getSongLocation());
 
-        try {
+        try
+        {
+            holder.songAlbumView.setText((int) ((new File(mItems.get(position).getSongLocation().toString())).getTotalSpace()/1024));
             MediaPlayer mp = new MediaPlayer();
-            mp.setDataSource(mItems.get(position).getSongLocation());
-    //        holder.songAlbumView.setText(mp.get);
-        } catch (IOException e) {
-            e.printStackTrace();
+            mp.setDataSource(mItems.get(position).getSongLocation().toString());
+            holder.songTimeView.setText(mp.getDuration());
+        } catch (Exception e){
+
         }
+
+
+        //        holder.songAlbumView.setText(mp.get);
 
 
         // Start a drag whenever the handle view it touched

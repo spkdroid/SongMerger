@@ -75,7 +75,7 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
         Cursor mCursor = getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[] { MediaStore.Audio.Media.DISPLAY_NAME,
-                        MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Albums.ALBUM_ART}, null, null, null);
+                        MediaStore.Audio.Media.DATA}, null, null, null);
 
         int count = mCursor.getCount();
         System.out.println("total no of songs are=" + count);
@@ -88,8 +88,6 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
                     mCursor.getString(mCursor
                             .getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
             songMap.put("songPath", mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
-            songMap.put("songAlbumName",mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
-            songMap.put("songAlbumImage",mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART)));
             mSongsList.add(songMap);
         }
 
