@@ -22,6 +22,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,8 @@ import com.dija.songmerge.songmerger.helper.ItemTouchHelperAdapter;
 import com.dija.songmerge.songmerger.helper.ItemTouchHelperViewHolder;
 import com.dija.songmerge.songmerger.helper.OnStartDragListener;
 import com.dija.songmerge.songmerger.helper.SongList;
+import com.dija.songmerge.songmerger.repository.SongRepository;
+import com.dija.songmerge.songmerger.repository.database.Song;
 
 
 import java.io.File;
@@ -46,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import wseemann.media.FFmpegMediaMetadataRetriever;
+
 
 
 /**
@@ -63,7 +66,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     private final OnStartDragListener mDragStartListener;
 
+    private static Context ctx;
+
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<SongList> songs) {
+        ctx = context;
         mDragStartListener = dragStartListener;
         mItems.addAll(songs);
     }
@@ -109,10 +115,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
     }
+
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {

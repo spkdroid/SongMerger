@@ -340,10 +340,21 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
 
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Your File Has been Successfully Created")
-                        .setMessage("The Output file can be found in the memory card in the folder named SongMerger in the memory card.Please use the Exported Song tab in the bottom navigation to find your song")
+                        .setMessage("The Output file can be found in the memory card in the folder named SongMerger.Please use the Exported Song tab in the bottom navigation to find your song")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //TODO your background code
+                                        SongRepository sp = new SongRepository(getContext());
+                                        sp.clearTable();
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                });
+
                                 dialog.dismiss();
                             }
                         })
