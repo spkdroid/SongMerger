@@ -17,6 +17,7 @@ import android.widget.ListView;
 import com.dija.songmerge.songmerger.R;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,15 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
 
         lv = v.findViewById(R.id.listfiles);
 
+        if(!(new File(DIRECTORY).exists()))
+        {
+            try {
+                new File(DIRECTORY+"/songmerge.text").createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         Ringtones = getFiles();
 
@@ -133,12 +143,17 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
 
         List<String> list = new ArrayList<>();
 
+
         File[] listOfFiles = folder.listFiles();
 
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                list.add(listOfFiles[i].getName());
+        try {
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    list.add(listOfFiles[i].getName());
+                }
             }
+        } catch (Exception e){
+
         }
         return list;
     }
