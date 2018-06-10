@@ -321,7 +321,6 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
             @Override
             protected Void doInBackground(Integer... params) {
                 // TODO Auto-generated method stub
-
                 try {
                     while ((temp = seq.read()) != -1) {
                         fos.write(temp);

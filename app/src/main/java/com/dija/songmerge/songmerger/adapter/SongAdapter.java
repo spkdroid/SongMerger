@@ -5,12 +5,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
 import com.dija.songmerge.songmerger.helper.SongList;
@@ -31,10 +33,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     }
 
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView songName,songLocation;
+        public TextView songName, songLocation;
 
         public MyViewHolder(View view) {
             super(view);
@@ -45,7 +46,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
         @Override
         public void onClick(final View v) {
-       //     Toast.makeText(v.getContext(),songName.getText().toString(),Toast.LENGTH_LONG).show();
+            //     Toast.makeText(v.getContext(),songName.getText().toString(),Toast.LENGTH_LONG).show();
+
+
+            try {
+
+
+
             new BottomSheet.Builder(v.getContext())
                     .setSheet(R.menu.bottom_sheet)
                     .setTitle(R.string.options)
@@ -58,31 +65,35 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
                         @Override
                         public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
 
-                            switch (menuItem.getItemId()){
+                            switch (menuItem.getItemId()) {
                                 case R.id.playbuffer:
-                                    try
-                                    {
+                                    try {
                                         Intent j = new Intent(Intent.ACTION_VIEW, Uri.parse(songLocation.getText().toString()));
                                         j.setDataAndType(Uri.parse(songLocation.getText().toString()), "video/mp4");
                                         v.getContext().startActivity(j);
-                                    }
-                                    catch (Exception e)
-                                    {
+                                        bottomSheet.dismiss();
+                                    } catch (Exception e) {
                                         // TODO: handle exception
                                     }
                                     break;
                                 case R.id.mergebuffer:
                                     String songId = songName.getText().toString();
                                     String location = songLocation.getText().toString();
-                                    songSelectedListener.onSongSelected(songId,location);
+                                    songSelectedListener.onSongSelected(songId, location);
+                                    bottomSheet.dismiss();
                             }
-                            }
+                        }
+
                         @Override
                         public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @Nullable Object o, int i) {
 
                         }
                     })
                     .show();
+            } catch (Exception e){
+                Log.e("Catch Block","Memory Leak captured");
+            }
+
         }
     }
 
@@ -106,7 +117,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         return songList.size();
     }
 
-    public List<SongList> Fetch(){
+    public List<SongList> Fetch() {
         return songList;
     }
 }

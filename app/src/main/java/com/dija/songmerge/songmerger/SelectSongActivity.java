@@ -140,9 +140,13 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
         @Override
         protected String doInBackground(Song... params)
         {
-            repository.addSong(params[0]);
-            List<Song> songs = repository.getAllSongs();
-            Log.d("DbSize", String.valueOf(songs.size()));
+            try {
+                repository.addSong(params[0]);
+                List<Song> songs = repository.getAllSongs();
+                Log.d("DbSize", String.valueOf(songs.size()));
+            } catch (Exception e){
+          //      Toast.makeText(getApplicationContext(),"Cannot add Same Item",Toast.LENGTH_LONG).show();
+            }
             return "adding song";
         }
     }
