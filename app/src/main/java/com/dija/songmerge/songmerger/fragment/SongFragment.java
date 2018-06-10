@@ -287,7 +287,7 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
     protected void mergerService(List<FileInputStream> ar2, String length) {
         // TODO Auto-generated method stub
 
-        final String res = Environment.getExternalStorageDirectory() + "/videotomusic/" + length + ".mp3";
+        final String res = Environment.getExternalStorageDirectory() + "/songmerger/" + length + ".mp3";
         final Iterator<FileInputStream> it = ar2.iterator();
 
         Enumeration<DataInputStream> en = new Enumeration<DataInputStream>() {

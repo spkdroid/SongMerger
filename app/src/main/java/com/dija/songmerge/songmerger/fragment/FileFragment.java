@@ -38,7 +38,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private static final int EXIT = 0;
     private static final int STOP = 1;
-    private static final String DIRECTORY = "/mnt/sdcard/videotomusic";
+    private static final String DIRECTORY = "/mnt/sdcard/songmerger";
     private MediaPlayer mp = new MediaPlayer();
     List<String> Ringtones = new ArrayList<String>();
     Boolean hasErrors = false;
