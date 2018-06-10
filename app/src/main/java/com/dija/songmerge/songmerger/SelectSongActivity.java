@@ -78,7 +78,7 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
                         MediaStore.Audio.Media.DATA}, null, null, null);
 
         int count = mCursor.getCount();
-        System.out.println("total no of songs are=" + count);
+
         HashMap<String, String> songMap;
 
         while (mCursor.moveToNext()) {

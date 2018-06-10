@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Song Merger</string>
     <string name="title_home">Song</string>
-    <string name="title_dashboard">File Manager</string>
+    <string name="title_dashboard">Exported Song</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_hub">HubActivity</string>
 
