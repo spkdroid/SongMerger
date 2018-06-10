@@ -80,13 +80,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         holder.songNameView.setText(mItems.get(position).getSongName());
         holder.songLocView.setText(mItems.get(position).getSongLocation());
-        String filePath = new File(mItems.get(position).getSongLocation()).getAbsolutePath();
 
-        Bitmap coverBitmap = BitmapFactory.decodeFile(filePath);
+        try {
+            MediaPlayer mp = new MediaPlayer();
+            mp.setDataSource(mItems.get(position).getSongLocation());
+    //        holder.songAlbumView.setText(mp.get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         // Start a drag whenever the handle view it touched
-        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
+        holder.songNameView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
@@ -133,15 +138,17 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             ItemTouchHelperViewHolder {
 
         public final TextView songNameView;
-        public final ImageView handleView;
         public final TextView songLocView;
+        public final TextView songAlbumView;
+        public final TextView songTimeView;
         CardView cv;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             songNameView = (TextView) itemView.findViewById(R.id.songnameview);
             songLocView = (TextView) itemView.findViewById(R.id.songlocationview);
-            handleView = (ImageView) itemView.findViewById(R.id.handle);
+            songAlbumView = (TextView) itemView.findViewById(R.id.songAlbum);
+            songTimeView = (TextView) itemView.findViewById(R.id.songduration);
         }
 
         @Override

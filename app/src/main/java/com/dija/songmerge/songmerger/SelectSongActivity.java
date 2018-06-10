@@ -26,14 +26,11 @@ import java.util.List;
 
 public class SelectSongActivity extends AppCompatActivity implements TextWatcher, SongSelectedListener
 {
-
     private List<SongList> songList = new ArrayList<>();
     private List<SongList> resultList = new ArrayList<>();
     private SongRepository repository;
     private RecyclerView recyclerView;
     private SongAdapter mAdapter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +57,7 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
     }
 
     private void prepareSongData() {
-
         ArrayList<HashMap<String, String>> hello =  getAudioList();
-
 
         for (HashMap<String,String> p:hello)
         {
@@ -70,7 +65,6 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
             SongList a = new SongList(p.get("songTitle"),p.get("songPath"));
             resultList.add(a);
         }
-
         songList.addAll(resultList);
         mAdapter.notifyDataSetChanged();
     }
@@ -81,7 +75,7 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
         Cursor mCursor = getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[] { MediaStore.Audio.Media.DISPLAY_NAME,
-                        MediaStore.Audio.Media.DATA }, null, null, null);
+                        MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Albums.ALBUM_ART}, null, null, null);
 
         int count = mCursor.getCount();
         System.out.println("total no of songs are=" + count);
@@ -93,8 +87,9 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
                     "songTitle",
                     mCursor.getString(mCursor
                             .getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
-            songMap.put("songPath", mCursor.getString(mCursor
-                    .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+            songMap.put("songPath", mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+            songMap.put("songAlbumName",mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
+            songMap.put("songAlbumImage",mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART)));
             mSongsList.add(songMap);
         }
 
@@ -144,7 +139,6 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
     }
 
     private class AddSongToRepo extends AsyncTask<Song,String, String> {
-
         @Override
         protected String doInBackground(Song... params)
         {

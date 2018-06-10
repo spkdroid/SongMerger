@@ -14,8 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="120dp"
@@ -36,22 +37,30 @@
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/songnameview"
                 android:layout_width="236dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="68dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:text="Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+
+                card_view:layout_constraintHorizontal_bias="0.068"
+                card_view:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/songlocationview"
@@ -59,23 +68,33 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
-
-            <ImageView
-                android:id="@+id/handle"
+            <TextView
+                android:id="@+id/songAlbum"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical|right"
-                android:scaleType="center"
-                app:srcCompat="@drawable/ic_launcher_background" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:text="Album"
+                android:textColor="#FF0000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.048" />
+
+            <TextView
+                android:id="@+id/songduration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:text="00:00"
+                android:textColor="#334455"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.846" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_anchor="@+id/card_view"
-        app:layout_anchorGravity="top|center"></LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>
