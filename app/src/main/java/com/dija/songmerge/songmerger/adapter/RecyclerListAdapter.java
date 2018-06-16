@@ -97,11 +97,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         }
 
-
-        //        holder.songAlbumView.setText(mp.get);
-
-
-        // Start a drag whenever the handle view it touched
         holder.songNameView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -118,6 +113,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onItemDismiss(final int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
+  //      Toast.makeText(ctx.getApplicationContext(),"Item Removed",Toast.LENGTH_LONG).show();
     }
 
 
@@ -174,5 +170,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         }
 
 
-    }
+
+        }
 }
