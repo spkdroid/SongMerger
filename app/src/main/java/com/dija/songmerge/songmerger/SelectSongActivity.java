@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.adapter.SongAdapter;
 import com.dija.songmerge.songmerger.adapter.SongSelectedListener;
@@ -76,8 +75,6 @@ public class SelectSongActivity extends AppCompatActivity implements TextWatcher
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[] { MediaStore.Audio.Media.DISPLAY_NAME,
                         MediaStore.Audio.Media.DATA}, null, null, null);
-
-        int count = mCursor.getCount();
 
         HashMap<String, String> songMap;
 

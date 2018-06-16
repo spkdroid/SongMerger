@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -163,12 +162,10 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -178,35 +175,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-     //   if (id == R.id.nav_camera) {
-            // Handle the camera action
-      //  } else if (id == R.id.nav_gallery) {
-
-        //} else if (id == R.id.nav_slideshow) {
-
-   //     } else if (id == R.id.nav_manage) {
-
-     //   } else
          if (id == R.id.nav_share) {
 
             String shareBody = "http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger";
-
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "APP NAME (Open it in Google Play Store to Download the Application)");
-
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
         } else if (id == R.id.nav_send) {
-
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("market://details?id=com.dija.songmerge.songmerger")));
             } catch (android.content.ActivityNotFoundException anfe) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
             }
-
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
