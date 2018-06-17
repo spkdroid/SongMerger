@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 new AsyncTask<Void, Void, Integer>() {
                     @Override
                     protected Integer doInBackground(Void... voids) {
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity
                         recreate();
                     }
                 }.execute();
-
             }
         });
 
@@ -106,13 +104,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-    //    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    //    if (drawer.isDrawerOpen(GravityCompat.START)) {
-    //        drawer.closeDrawer(GravityCompat.START);
-    //    } else {
-    //        super.onBackPressed();
-    //    }
-
         new AlertDialog.Builder(this).setIcon(R.drawable.icon).setTitle("Exit Application")
                 .setMessage("Are you sure you want to exit this application?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -130,7 +121,6 @@ public class MainActivity extends AppCompatActivity
                                 android.os.Process.killProcess(android.os.Process.myPid());
                                 System.exit(1);
                             }
-
                         }.execute();
 
                     }
@@ -146,7 +136,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).setNegativeButton("No", null).show();
-
     }
 
     @Override
@@ -176,14 +165,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
          if (id == R.id.nav_share) {
-
             String shareBody = "http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "APP NAME (Open it in Google Play Store to Download the Application)");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
         } else if (id == R.id.nav_send) {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW,

@@ -125,6 +125,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             notifyItemMoved(fromPosition, toPosition);
         } catch (Exception e) {
             // Investigate this bug
+             
         }
         return true;
     }

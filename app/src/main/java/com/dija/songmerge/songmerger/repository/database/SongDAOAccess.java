@@ -25,5 +25,4 @@ public interface SongDAOAccess
     @Delete
     void deleteSong(Song songToBeDeleted);
 
-
 }
