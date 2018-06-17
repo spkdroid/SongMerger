@@ -178,7 +178,11 @@ public class MainActivity extends AppCompatActivity
             } catch (android.content.ActivityNotFoundException anfe) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
             }
-        }
+        } else if(id == R.id.nav_manage){
+
+             Intent i = new Intent(getApplicationContext(),TutorialActivity.class);
+             startActivity(i);
+         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

@@ -9,37 +9,41 @@
     >
     <!-- TODO: Update blank fragment layout -->
 
-    <android.support.constraint.ConstraintLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        >
 
-        <Button
-            android:id="@+id/mergebutton"
-            android:layout_width="159dp"
-            android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:text="Merge"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.115"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <TableRow android:layout_width="match_parent">
 
-        <Button
-            android:id="@+id/addbutton"
-            android:layout_width="159dp"
-            android:layout_height="37dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/mergebutton"
-            android:layout_marginEnd="8dp"
-            android:text="Add Song"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            <Button
+                android:id="@+id/mergebutton"
+                android:layout_width="167dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:text="Merge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.115"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/addbutton"
+                android:layout_width="191dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/mergebutton"
+                android:layout_marginEnd="8dp"
+                android:text="Add Song"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </TableRow>
+    </TableLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/songlist"
@@ -47,7 +51,16 @@
         android:layout_height="470dp"
         android:layout_above="@+id/layoutid"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/emptymsg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Please add Song to merge buffer" />
 
 
 </LinearLayout>

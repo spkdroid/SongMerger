@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dija.songmerge.songmerger.R;
@@ -69,6 +70,8 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
     private int READ_STORAGE_PERMISSION_REQUEST_CODE = 1;
     private SongRepository songRepository;
     private static RecyclerListAdapter adapter;
+    private TextView txtMessage;
+
 
 
     static List<FileInputStream> ar = new ArrayList<FileInputStream>();
@@ -106,7 +109,9 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_song, container, false);
+
         songList = v.findViewById(R.id.songlist);
+        txtMessage = v.findViewById(R.id.emptymsg);
 
         AddButton = v.findViewById(R.id.addbutton);
         MergeButton = v.findViewById(R.id.mergebutton);
@@ -121,6 +126,14 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
 
         if (adapter != null)
             songList.setAdapter(adapter);
+
+        if(adapter.getItemCount() > 0){
+            songList.setVisibility(View.VISIBLE);
+            txtMessage.setVisibility(View.INVISIBLE);
+        } else {
+            songList.setVisibility(View.INVISIBLE);
+            txtMessage.setVisibility(View.VISIBLE);
+        }
 
 
         songList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -238,6 +251,15 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
         if (adapter != null)
             songList.setAdapter(adapter);
 
+        if(adapter.getItemCount() > 0){
+            songList.setVisibility(View.VISIBLE);
+            txtMessage.setVisibility(View.INVISIBLE);
+        } else {
+            songList.setVisibility(View.INVISIBLE);
+            txtMessage.setVisibility(View.VISIBLE);
+        }
+
+
         adapter.notifyDataSetChanged();
     }
 
@@ -329,6 +351,10 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+
+                SongRepository sp = new SongRepository(getContext());
+                sp.clearTable();
+
                 return null;
             }
 
@@ -336,40 +362,7 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
                 progress.dismiss();
                 counter = 0;
                 ar.clear();
-
-
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Your File Has been Successfully Created")
-                        .setMessage("The Output file can be found in the memory card in the folder named SongMerger.Please use the Exported Song tab in the bottom navigation to find your song")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-
-                                AsyncTask.execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //TODO your background code
-                                        SongRepository sp = new SongRepository(getContext());
-                                        sp.clearTable();
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                });
-
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("Rate Us", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.dija.songmerge.songmerger")));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
-                                }
-                            }
-                        })
-                        .setIcon(R.drawable.icon)
-                        .show();
+                ShowMessage();
             }
 
 
@@ -378,5 +371,41 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
 
     }
 
+    private void ShowMessage() {
 
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Your File Has been Successfully Created")
+                .setMessage("The Output file can be found in the memory card in the folder named SongMerger.Please use the Exported Song tab in the bottom navigation to find your song")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+
+                        getActivity().runOnUiThread(new Runnable() {
+
+
+
+                            @Override
+                            public void run() {
+                                // Stuff that updates the UI
+                                loadSongsFromDB();
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Rate Us", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.dija.songmerge.songmerger")));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
+                        }
+                    }
+                })
+                .setIcon(R.drawable.icon)
+                .show();
+    }
 }
