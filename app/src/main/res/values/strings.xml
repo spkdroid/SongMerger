@@ -74,5 +74,15 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="tutorial">
+        <b>How to use the Song Merge</b>
+        \n
+
+        1) Add the Song to the Merge buffer by clicking the Add Song button \n
+        2) After selecting the set of songs, Press the merge button \n
+        3) The Merged Song can be found in the exported tab \n
+
+    </string>
+
 
 </resources>

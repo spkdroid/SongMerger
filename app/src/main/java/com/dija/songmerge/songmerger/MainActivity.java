@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -64,12 +63,22 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                new AsyncTask<Void, Void, Integer>() {
+                    @Override
+                    protected Integer doInBackground(Void... voids) {
+                        songRepository.clearTable();
+                        return 0;
+                    }
+                    @Override
+                    protected void onPostExecute(Integer integer) {
+                        super.onPostExecute(integer);
+                        recreate();
+                    }
+                }.execute();
             }
         });
 
@@ -95,13 +104,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-    //    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    //    if (drawer.isDrawerOpen(GravityCompat.START)) {
-    //        drawer.closeDrawer(GravityCompat.START);
-    //    } else {
-    //        super.onBackPressed();
-    //    }
-
         new AlertDialog.Builder(this).setIcon(R.drawable.icon).setTitle("Exit Application")
                 .setMessage("Are you sure you want to exit this application?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -119,7 +121,6 @@ public class MainActivity extends AppCompatActivity
                                 android.os.Process.killProcess(android.os.Process.myPid());
                                 System.exit(1);
                             }
-
                         }.execute();
 
                     }
@@ -135,7 +136,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).setNegativeButton("No", null).show();
-
     }
 
     @Override
@@ -151,12 +151,10 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -166,19 +164,25 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
+         if (id == R.id.nav_share) {
+            String shareBody = "http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger";
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "APP NAME (Open it in Google Play Store to Download the Application)");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
         } else if (id == R.id.nav_send) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=com.dija.songmerge.songmerger")));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.dija.songmerge.songmerger")));
+            }
+        } else if(id == R.id.nav_manage){
 
-        }
+             Intent i = new Intent(getApplicationContext(),TutorialActivity.class);
+             startActivity(i);
+         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

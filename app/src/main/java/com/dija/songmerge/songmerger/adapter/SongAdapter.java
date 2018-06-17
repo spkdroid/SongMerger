@@ -51,8 +51,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
             try {
 
-
-
             new BottomSheet.Builder(v.getContext())
                     .setSheet(R.menu.bottom_sheet)
                     .setTitle(R.string.options)
