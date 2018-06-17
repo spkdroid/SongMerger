@@ -387,8 +387,8 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
                             @Override
                             public void run() {
                                 // Stuff that updates the UI
-                       //         loadSongsFromDB();
-                       //         adapter.notifyDataSetChanged();
+                                loadSongsFromDB();
+                                adapter.notifyDataSetChanged();
                             }
                         });
 
