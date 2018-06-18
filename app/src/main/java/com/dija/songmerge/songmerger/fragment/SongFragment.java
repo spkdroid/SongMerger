@@ -58,7 +58,7 @@ import java.util.concurrent.ExecutionException;
  * Use the {@link SongFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SongFragment extends Fragment implements OnStartDragListener, View.OnClickListener {
+public class SongFragment extends Fragment implements OnStartDragListener, View.OnClickListener,DialogInterface.OnDismissListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -71,16 +71,12 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
     private SongRepository songRepository;
     private static RecyclerListAdapter adapter;
     private TextView txtMessage;
-
-
-
     static List<FileInputStream> ar = new ArrayList<FileInputStream>();
     static SequenceInputStream seq;
     static DataOutputStream fos;
     int temp;
     static int counter = 1;
-    ProgressDialog barProgressDialog;
-    ProgressDialog progress;
+    private static ProgressDialog progress;
 
 
     public SongFragment() {
@@ -116,8 +112,13 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
         AddButton = v.findViewById(R.id.addbutton);
         MergeButton = v.findViewById(R.id.mergebutton);
 
+
         songRepository = new SongRepository(getActivity().getApplicationContext());
         loadSongsFromDB();
+
+        progress = new ProgressDialog(getActivity());
+
+   //     progress.setOnDismissListener(this.getActivity());
 
         adapter = new RecyclerListAdapter(
                 getActivity(),
@@ -283,6 +284,12 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
     }
 
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        PostExecuteTasks();
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -334,7 +341,6 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
 
         new AsyncTask<Integer, Void, Void>() {
             protected void onPreExecute() {
-                progress = new ProgressDialog(getActivity());
                 progress.setMessage("Merging..Please wait!");
                 progress.setCancelable(true);
                 progress.show();
@@ -352,23 +358,43 @@ public class SongFragment extends Fragment implements OnStartDragListener, View.
                     e.printStackTrace();
                 }
 
-                SongRepository sp = new SongRepository(getContext());
-                sp.clearTable();
 
                 return null;
             }
 
             protected void onPostExecute(Void result) {
+
+                progress.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        PostExecuteTasks();
+                    }
+                });
+
                 progress.dismiss();
+
                 counter = 0;
-                ar.clear();
-                ShowMessage();
+
             }
 
 
         }.execute();
 
 
+    }
+
+    private void PostExecuteTasks() {
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                SongRepository sp = new SongRepository(getContext());
+                sp.clearTable();
+                ar.clear();
+
+            }
+        });
+        ShowMessage();
     }
 
     private void ShowMessage() {
